@@ -54,12 +54,13 @@
     return `${p[2]}.${p[1]}`;
   }
   function normalizePhone(raw) {
-    if (!raw) throw new Error('Telefon raqam kiritilishi shart');
-    let c = raw.replace(/[^\d]/g, '');
-    if (c.startsWith('8') && c.length === 10) c = '9' + c.slice(1);
-    else if (c.startsWith('998') && c.length === 12) c = c.slice(3);
-    if (c.length === 9 && c.startsWith('9')) return '+998' + c;
-    throw new Error('Telefon raqam noto‘g‘ri formatda');
+    if (!raw || !String(raw).trim()) throw new Error('Telefon raqam kiritilishi shart');
+    let c = String(raw).replace(/\D/g, '');
+    if (c.length === 12 && c.startsWith('998')) c = c.slice(3);
+    else if (c.length === 10 && c.startsWith('8')) c = c.slice(1);
+    if (c.length >= 9) c = c.slice(-9);
+    if (c.length === 9) return '+998' + c;
+    throw new Error('Telefon raqam noto‘g‘ri formatda. Masalan: 90 123 45 67');
   }
   function maskPhone(phone) {
     const c = phone.replace(/[^\d]/g, '').replace(/^998/, '');
