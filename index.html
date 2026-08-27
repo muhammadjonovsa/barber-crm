@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Grand Barber CRM</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- ============ VIEW: LOGIN ============ -->
+    <div id="view-login" class="view active">
+      <div class="login-wrap">
+        <div class="login-logo">
+          <div class="logo-mark">GB</div>
+          <h1>GRAND BARBER</h1>
+          <p class="tagline">Mijozlaringiz, sizning gigiyenangiz.</p>
+        </div>
+        <div class="login-phone">
+          <label for="login-phone-input">📱 Telefon raqamingiz</label>
+          <input id="login-phone-input" type="tel" inputmode="tel" placeholder="+998 90 123 45 67" />
+          <p class="hint">Ma'lumotlar shu qurilmada saqlanadi</p>
+        </div>
+        <button id="login-btn" class="btn btn-primary btn-block">Boshlash →</button>
+      </div>
+    </div>
+
+    <!-- ============ VIEW: APP (after login) ============ -->
+    <div id="view-app" class="view">
+      <!-- Top bar -->
+      <header class="topbar">
+        <div class="topbar-brand">
+          <div class="logo-mark small">GB</div>
+          <span id="topbar-name">GRAND BARBER</span>
+        </div>
+        <button id="toggle-sidebar" class="icon-btn">☰</button>
+      </header>
+
+      <!-- Bottom navigation -->
+      <nav class="tabbar" id="tabbar">
+        <button class="tab active" data-view="home">⌂<span>Bosh</span></button>
+        <button class="tab" data-view="clients">👤<span>Mijozlar</span></button>
+        <button class="tab" data-view="visits">✂️<span>Kelishlar</span></button>
+        <button class="tab" data-view="stats">📊<span>Statistika</span></button>
+        <button class="tab" data-view="settings">⚙️<span>Sozlama</span></button>
+      </nav>
+
+      <main class="content">
+        <!-- ===== HOME ===== -->
+        <section id="panel-home" class="panel active">
+          <div class="hero">
+            <h2>Xush kelibsiz, <span id="hero-name"></span> 👋</h2>
+            <p>Bugungi rejangiz</p>
+            <div class="hero-stats" id="home-stats"></div>
+          </div>
+          <div class="quick-grid">
+            <button class="quick" data-quick="add"><span>➕</span><b>Mijoz qo‘shish</b></button>
+            <button class="quick" data-quick="arrivals"><span>🔔</span><b>Bugun kelishlar</b></button>
+            <button class="quick" data-quick="due"><span>📤</span><b>Kelishi keraklar</b></button>
+            <button class="quick" data-quick="now"><span>✅</span><b>Bugun kelganlar</b></button>
+          </div>
+        </section>
+
+        <!-- ===== CLIENTS ===== -->
+        <section id="panel-clients" class="panel">
+          <div class="panel-head">
+            <h2>Mijozlar</h2>
+            <button id="add-client-btn" class="btn btn-primary sm">➕ Qo‘shish</button>
+          </div>
+          <div class="search-box">
+            <input id="client-search" placeholder="🔎 Ism yoki telefon bo‘yicha qidirish..." />
+          </div>
+          <div id="client-list" class="list"></div>
+        </section>
+
+        <!-- ===== VISITS / ARRIVALS ===== -->
+        <section id="panel-visits" class="panel">
+          <div class="panel-head">
+            <h2>Kelishlar</h2>
+          </div>
+          <div class="seg">
+            <button class="seg-btn active" id="seg-arrived">📥 Bugun kelgan</button>
+            <button class="seg-btn" id="seg-due">📤 Kelishi kerak</button>
+          </div>
+          <div id="arrived-panel">
+            <h3 class="sub">Bugun kelganlar</h3>
+            <div id="arrived-list" class="list"></div>
+          </div>
+          <div id="due-panel" class="hidden">
+            <h3 class="sub">Bugun kelishi kerak</h3>
+            <div id="due-list" class="list"></div>
+          </div>
+        </section>
+
+        <!-- ===== STATS ===== -->
+        <section id="panel-stats" class="panel">
+          <div class="panel-head"><h2>Statistika</h2></div>
+          <div class="stat-cards" id="stats-today"></div>
+          <div class="stat-rows" id="stats-periods"></div>
+        </section>
+
+        <!-- ===== SETTINGS ===== -->
+        <section id="panel-settings" class="panel">
+          <div class="panel-head"><h2>Sozlamalar</h2></div>
+          <div class="settings-list" id="settings-list"></div>
+        </section>
+      </main>
+    </div>
+
+    <!-- ============ VIEW: CLIENT DETAIL (modal-ish) ============ -->
+    <div id="view-client" class="view">
+      <header class="simple-head">
+        <button class="icon-btn" id="client-back">←</button>
+        <h2 id="client-detail-name">Mijoz</h2>
+      </header>
+      <div class="content" id="client-detail-body"></div>
+    </div>
+
+    <!-- ============ VIEW: ADD / EDIT CLIENT ============ -->
+    <div id="view-form" class="view">
+      <header class="simple-head">
+        <button class="icon-btn" id="form-back">←</button>
+        <h2 id="form-title">Mijoz qo‘shish</h2>
+      </header>
+      <div class="content">
+        <form id="client-form" class="form">
+          <input type="hidden" id="f-id" />
+          <label>Ism</label>
+          <input id="f-name" placeholder="Masalan: ALISHER" required />
+          <label>Telefon raqam</label>
+          <input id="f-phone" placeholder="+998 90 123 45 67" required />
+          <label>Reminder intervali (kun)</label>
+          <div class="chip-row" id="f-interval-chips"></div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary btn-block" id="form-save">Saqlash</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
