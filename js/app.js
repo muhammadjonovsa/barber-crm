@@ -60,7 +60,7 @@
     else if (c.length === 10 && c.startsWith('8')) c = c.slice(1);
     if (c.length >= 9) c = c.slice(-9);
     if (c.length === 9) return '+998' + c;
-    throw new Error('Telefon raqam noto‘g‘ri formatda. Masalan: 90 123 45 67');
+    throw new Error('Telefon raqam noto‘g‘ri formatda. Siz kiritdingiz: "' + raw + '" (raqamlar: ' + c + ')');
   }
   function maskPhone(phone) {
     const c = phone.replace(/[^\d]/g, '').replace(/^998/, '');
